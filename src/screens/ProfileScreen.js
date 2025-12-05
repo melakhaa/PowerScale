@@ -117,7 +117,7 @@ export default function ProfileScreen() {
 
       <View style={styles.footer}>
         <Text style={styles.footerText}>Made with ❤️ for Anime Fans</Text>
-        <Text style={styles.copyright}>© 2025 PowerScale</Text>
+        <Text style={styles.copyright}>© 2025 PowerScale/DARRENSIGMA</Text>
       </View>
     </ScrollView>
   );
