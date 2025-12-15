@@ -1,4 +1,4 @@
-# Anime Power Scaling
+# PowerScale
 
 A React Native app for managing and visualizing anime character power tiers. Built with Expo and Supabase.
 
