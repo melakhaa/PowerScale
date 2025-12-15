@@ -1,25 +1,27 @@
 // src/screens/ProfileScreen.js
 import React from 'react';
 import { View, Text, ScrollView, StyleSheet, Image } from 'react-native';
+import { useTheme } from '../context/ThemeContext';
 
 export default function ProfileScreen() {
+  const { theme } = useTheme();
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.logoContainer}>
+    <ScrollView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+      <View style={[styles.header, { backgroundColor: theme.colors.surface, borderBottomColor: theme.colors.border }]}>
+        <View style={[styles.logoContainer, { backgroundColor: theme.colors.primary }]}>
           <Image
             source={require('../../assets/WhatsApp Image 2025-09-26 at 22.34.40_cf4c48df.jpg')}
             style={styles.logoImage}
             resizeMode='contain'
           />
         </View>
-        <Text style={styles.appName}>PowerScale</Text>
-        <Text style={styles.version}>Version 1.0.0</Text>
+        <Text style={[styles.appName, { color: theme.colors.text }]}>PowerScale</Text>
+        <Text style={[styles.version, { color: theme.colors.textSecondary }]}>Version 1.0.0</Text>
       </View>
 
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>About App</Text>
-        <Text style={styles.description}>
+      <View style={[styles.section, { backgroundColor: theme.colors.surface }]}>
+        <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>About App</Text>
+        <Text style={[styles.description, { color: theme.colors.textSecondary }]}>
           PowerScale adalah aplikasi untuk membandingkan dan mengklasifikasikan 
           kekuatan karakter-karakter anime menggunakan sistem tier dari VS Battles Wiki. 
           Aplikasi ini membantu fans anime untuk memahami skala kekuatan karakter favorit mereka 
@@ -27,97 +29,97 @@ export default function ProfileScreen() {
         </Text>
       </View>
 
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Features</Text>
+      <View style={[styles.section, { backgroundColor: theme.colors.surface }]}>
+        <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Features</Text>
         <View style={styles.featureItem}>
-          <Text style={styles.featureBullet}>•</Text>
-          <Text style={styles.featureText}>Browse karakter anime dengan tier system</Text>
+          <Text style={[styles.featureBullet, { color: theme.colors.primary }]}>•</Text>
+          <Text style={[styles.featureText, { color: theme.colors.textSecondary }]}>Browse karakter anime dengan tier system</Text>
         </View>
         <View style={styles.featureItem}>
-          <Text style={styles.featureBullet}>•</Text>
-          <Text style={styles.featureText}>56+ Tier categories (Tier 0 hingga 11-C)</Text>
+          <Text style={[styles.featureBullet, { color: theme.colors.primary }]}>•</Text>
+          <Text style={[styles.featureText, { color: theme.colors.textSecondary }]}>56+ Tier categories (Tier 0 hingga 11-C)</Text>
         </View>
         <View style={styles.featureItem}>
-          <Text style={styles.featureBullet}>•</Text>
-          <Text style={styles.featureText}>Statistics detail (AP, Speed, Durability, dll)</Text>
+          <Text style={[styles.featureBullet, { color: theme.colors.primary }]}>•</Text>
+          <Text style={[styles.featureText, { color: theme.colors.textSecondary }]}>Statistics detail (AP, Speed, Durability, dll)</Text>
         </View>
         <View style={styles.featureItem}>
-          <Text style={styles.featureBullet}>•</Text>
-          <Text style={styles.featureText}>Filter karakter berdasarkan tier</Text>
+          <Text style={[styles.featureBullet, { color: theme.colors.primary }]}>•</Text>
+          <Text style={[styles.featureText, { color: theme.colors.textSecondary }]}>Filter karakter berdasarkan tier</Text>
         </View>
         <View style={styles.featureItem}>
-          <Text style={styles.featureBullet}>•</Text>
-          <Text style={styles.featureText}>CRUD operations untuk manage karakter</Text>
+          <Text style={[styles.featureBullet, { color: theme.colors.primary }]}>•</Text>
+          <Text style={[styles.featureText, { color: theme.colors.textSecondary }]}>CRUD operations untuk manage karakter</Text>
         </View>
         <View style={styles.featureItem}>
-          <Text style={styles.featureBullet}>•</Text>
-          <Text style={styles.featureText}>Database lengkap dengan Supabase</Text>
+          <Text style={[styles.featureBullet, { color: theme.colors.primary }]}>•</Text>
+          <Text style={[styles.featureText, { color: theme.colors.textSecondary }]}>Database lengkap dengan Supabase</Text>
         </View>
       </View>
 
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Technology Stack</Text>
+      <View style={[styles.section, { backgroundColor: theme.colors.surface }]}>
+        <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Technology Stack</Text>
         <View style={styles.techContainer}>
-          <View style={styles.techBadge}>
+          <View style={[styles.techBadge, { backgroundColor: theme.colors.primary }]}>
             <Text style={styles.techText}>React Native</Text>
           </View>
-          <View style={styles.techBadge}>
+          <View style={[styles.techBadge, { backgroundColor: theme.colors.primary }]}>
             <Text style={styles.techText}>Expo</Text>
           </View>
-          <View style={styles.techBadge}>
+          <View style={[styles.techBadge, { backgroundColor: theme.colors.primary }]}>
             <Text style={styles.techText}>Supabase</Text>
           </View>
-          <View style={styles.techBadge}>
+          <View style={[styles.techBadge, { backgroundColor: theme.colors.primary }]}>
             <Text style={styles.techText}>JavaScript</Text>
           </View>
         </View>
       </View>
 
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Tier System Examples</Text>
+      <View style={[styles.section, { backgroundColor: theme.colors.surface }]}>
+        <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Tier System Examples</Text>
         <View style={styles.tierExplanation}>
           <View style={styles.tierRow}>
             <View style={[styles.tierBadge, { backgroundColor: '#ff00ff' }]}>
               <Text style={styles.tierText}>Tier 0</Text>
             </View>
-            <Text style={styles.tierDesc}>Boundless</Text>
+            <Text style={[styles.tierDesc, { color: theme.colors.textSecondary }]}>Boundless</Text>
           </View>
           <View style={styles.tierRow}>
             <View style={[styles.tierBadge, { backgroundColor: '#ff4757' }]}>
               <Text style={styles.tierText}>2-C</Text>
             </View>
-            <Text style={styles.tierDesc}>Low Multiverse level</Text>
+            <Text style={[styles.tierDesc, { color: theme.colors.textSecondary }]}>Low Multiverse level</Text>
           </View>
           <View style={styles.tierRow}>
             <View style={[styles.tierBadge, { backgroundColor: '#ffa502' }]}>
               <Text style={styles.tierText}>3-A</Text>
             </View>
-            <Text style={styles.tierDesc}>Universe level</Text>
+            <Text style={[styles.tierDesc, { color: theme.colors.textSecondary }]}>Universe level</Text>
           </View>
           <View style={styles.tierRow}>
             <View style={[styles.tierBadge, { backgroundColor: '#ffd32a' }]}>
               <Text style={styles.tierText}>5-B</Text>
             </View>
-            <Text style={styles.tierDesc}>Planet level</Text>
+            <Text style={[styles.tierDesc, { color: theme.colors.textSecondary }]}>Planet level</Text>
           </View>
           <View style={styles.tierRow}>
             <View style={[styles.tierBadge, { backgroundColor: '#5f27cd' }]}>
               <Text style={styles.tierText}>7-B</Text>
             </View>
-            <Text style={styles.tierDesc}>City level</Text>
+            <Text style={[styles.tierDesc, { color: theme.colors.textSecondary }]}>City level</Text>
           </View>
           <View style={styles.tierRow}>
             <View style={[styles.tierBadge, { backgroundColor: '#54a0ff' }]}>
               <Text style={styles.tierText}>9-B</Text>
             </View>
-            <Text style={styles.tierDesc}>Wall level</Text>
+            <Text style={[styles.tierDesc, { color: theme.colors.textSecondary }]}>Wall level</Text>
           </View>
         </View>
       </View>
 
       <View style={styles.footer}>
-        <Text style={styles.footerText}>Made with ❤️ for Anime Fans</Text>
-        <Text style={styles.copyright}>© 2025 PowerScale/DARRENSIGMA</Text>
+        <Text style={[styles.footerText, { color: theme.colors.textSecondary }]}>Made with ❤️ for Anime Fans</Text>
+        <Text style={[styles.copyright, { color: theme.colors.textTertiary }]}>© 2025 PowerScale/DARRENSIGMA</Text>
       </View>
     </ScrollView>
   );

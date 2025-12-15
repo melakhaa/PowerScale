@@ -1,22 +1,25 @@
 // src/components/StatisticsDisplay.js
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { useTheme } from '../context/ThemeContext';
 
 export default function StatisticsDisplay({ character }) {
+  const { theme } = useTheme();
+
   const StatItem = ({ label, value }) => {
     if (!value) return null;
     
     return (
       <View style={styles.statItem}>
-        <Text style={styles.statLabel}>{label}:</Text>
-        <Text style={styles.statValue}>{value}</Text>
+        <Text style={[styles.statLabel, { color: theme.colors.text }]}>{label}:</Text>
+        <Text style={[styles.statValue, { color: theme.colors.textSecondary }]}>{value}</Text>
       </View>
     );
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.sectionTitle}>Statistics</Text>
+    <View style={[styles.container, { backgroundColor: theme.colors.surface, borderColor: theme.colors.border }]}>
+      <Text style={[styles.sectionTitle, { color: theme.colors.text, borderBottomColor: theme.colors.primary }]}>Statistics</Text>
       
       <StatItem label="Attack Potency" value={character.attack_potency} />
       <StatItem label="Speed" value={character.speed} />

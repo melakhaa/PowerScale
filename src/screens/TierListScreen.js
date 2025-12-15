@@ -9,9 +9,11 @@ import {
   RefreshControl,
 } from 'react-native';
 import { api } from '../config/supabase';
+import { useTheme } from '../context/ThemeContext';
 import TierCard from '../components/TierCard';
 
 const TierListScreen = ({ navigation }) => {
+  const { theme } = useTheme();
   const [tiers, setTiers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -54,30 +56,34 @@ const TierListScreen = ({ navigation }) => {
   );
 
   const renderHeader = () => (
-    <View style={styles.header}>
-      <Text style={styles.title}>Tier Rankings</Text>
-      <Text style={styles.subtitle}>Character classification by power level</Text>
+    <View style={[styles.header, { backgroundColor: theme.colors.background }]}>
+      <Text style={[styles.title, { color: theme.colors.text }]}>Tier Rankings</Text>
+      <Text style={[styles.subtitle, { color: theme.colors.textSecondary }]}>Character classification by power level</Text>
     </View>
   );
 
   if (loading) {
     return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#3498db" />
-        <Text style={styles.loadingText}>Loading tiers...</Text>
+      <View style={[styles.loadingContainer, { backgroundColor: theme.colors.background }]}>
+        <ActivityIndicator size="large" color={theme.colors.primary} />
+        <Text style={[styles.loadingText, { color: theme.colors.textSecondary }]}>Loading tiers...</Text>
       </View>
     );
   }
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <FlatList 
         data={tiers}
         renderItem={renderItem}
         keyExtractor={(item) => item.id.toString()}
         ListHeaderComponent={renderHeader}
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          <RefreshControl 
+            refreshing={refreshing} 
+            onRefresh={onRefresh}
+            tintColor={theme.colors.primary}
+          />
         }
         contentContainerStyle={styles.listContent}
       />

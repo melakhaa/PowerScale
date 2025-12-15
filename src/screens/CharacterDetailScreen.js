@@ -11,11 +11,13 @@ import {
   Alert,
 } from 'react-native';
 import { api } from '../config/supabase';
+import { useTheme } from '../context/ThemeContext';
 import StatisticsDisplay from '../components/StatisticsDisplay';
 import { getTierColor, getTierName } from '../utils/tierColors';
 
 export default function CharacterDetailScreen({ route, navigation }) {
   const { characterId } = route.params;
+  const { theme } = useTheme();
   const [character, setCharacter] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -90,16 +92,16 @@ export default function CharacterDetailScreen({ route, navigation }) {
 
   if (loading) {
     return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#3498db" />
+      <View style={[styles.loadingContainer, { backgroundColor: theme.colors.background }]}>
+        <ActivityIndicator size="large" color={theme.colors.primary} />
       </View>
     );
   }
 
   if (!character) {
     return (
-      <View style={styles.loadingContainer}>
-        <Text>Character not found</Text>
+      <View style={[styles.loadingContainer, { backgroundColor: theme.colors.background }]}>
+        <Text style={{ color: theme.colors.text }}>Character not found</Text>
       </View>
     );
   }
@@ -110,24 +112,24 @@ export default function CharacterDetailScreen({ route, navigation }) {
   const tierDescription = tierData.tier_description || '';
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <Image
         source={{ uri: character.image_url }}
         style={styles.image}
         defaultSource={require('../../assets/icon.png')}
       />
-      <View style={styles.content}>
-        <Text style={styles.name}>{character.name}</Text>
-        <Text style={styles.anime}>From: {character.anime}</Text>
+      <View style={[styles.content, { backgroundColor: theme.colors.background }]}>
+        <Text style={[styles.name, { color: theme.colors.text }]}>{character.name}</Text>
+        <Text style={[styles.anime, { color: theme.colors.textSecondary }]}>From: {character.anime}</Text>
 
-        <View style={styles.tierContainer}>
+        <View style={[styles.tierContainer, { backgroundColor: theme.colors.surface, borderColor: theme.colors.border }]}>
           <View style={[styles.tierBadge, { backgroundColor: getTierColor(tierCode) }]}>
             <Text style={styles.tierCode}>{tierCode}</Text>
           </View>
           <View style={styles.tierInfo}>
-            <Text style={styles.tierName}>{tierName}</Text>
+            <Text style={[styles.tierName, { color: theme.colors.text }]}>{tierName}</Text>
             {tierDescription ? (
-              <Text style={styles.tierDescription} numberOfLines={2}>
+              <Text style={[styles.tierDescription, { color: theme.colors.textSecondary }]} numberOfLines={2}>
                 {tierDescription}
               </Text>
             ) : null}
@@ -140,24 +142,24 @@ export default function CharacterDetailScreen({ route, navigation }) {
         {/* Description */}
         {character.description ? (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Description</Text>
-            <Text style={styles.description}>{character.description}</Text>
+            <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Description</Text>
+            <Text style={[styles.description, { color: theme.colors.textSecondary }]}>{character.description}</Text>
           </View>
         ) : null}
 
         {/* Abilities */}
         {character.abilities ? (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Powers and Abilities</Text>
-            <Text style={styles.abilities}>{character.abilities}</Text>
+            <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Powers and Abilities</Text>
+            <Text style={[styles.abilities, { color: theme.colors.textSecondary }]}>{character.abilities}</Text>
           </View>
         ) : null}
 
         {/* Notable Techniques */}
         {character.notable_techniques ? (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Notable Techniques</Text>
-            <Text style={styles.abilities}>{character.notable_techniques}</Text>
+            <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Notable Techniques</Text>
+            <Text style={[styles.abilities, { color: theme.colors.textSecondary }]}>{character.notable_techniques}</Text>
           </View>
         ) : null}
       </View>

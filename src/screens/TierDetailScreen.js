@@ -11,6 +11,7 @@ import {
   RefreshControl
 } from 'react-native';
 import { api } from '../config/supabase';
+import { useTheme } from '../context/ThemeContext';
 import CharacterCard from '../components/CharacterCard';
 import { getTierColor, getTierName } from '../utils/tierColors';
 import { Ionicons } from '@expo/vector-icons'; 
@@ -19,6 +20,7 @@ const ITEMS_PER_PAGE = 5; // Samakan dengan Home biar konsisten
 
 export default function TierDetailScreen({ route, navigation }) {
   const { tierCode } = route.params;
+  const { theme } = useTheme();
 
   // --- STATE ---
   const [characters, setCharacters] = useState([]);
@@ -120,7 +122,7 @@ export default function TierDetailScreen({ route, navigation }) {
           disabled={page === 0}
           onPress={() => changePage(Math.max(0, page - 1))}
         >
-          <Ionicons name="chevron-back" size={20} color={page === 0 ? "#bdc3c7" : "#3498db"} />
+          <Ionicons name="chevron-back" size={20} color={page === 0 ? "#bdc3c7" : theme.colors.primary} />
         </TouchableOpacity>
 
         {/* Angka Halaman */}
@@ -128,10 +130,10 @@ export default function TierDetailScreen({ route, navigation }) {
           {pages.map((p) => (
             <TouchableOpacity
               key={p}
-              style={[styles.pageNumberButton, page === p && styles.activePageButton]}
+              style={[styles.pageNumberButton, page === p && styles.activePageButton, { backgroundColor: theme.colors.surface, borderColor: page === p ? theme.colors.primary : theme.colors.border }]}
               onPress={() => changePage(p)}
             >
-              <Text style={[styles.pageNumberText, page === p && styles.activePageText]}>
+              <Text style={[styles.pageNumberText, page === p && { color: theme.colors.primary }]}>
                 {p + 1}
               </Text>
             </TouchableOpacity>
@@ -144,7 +146,7 @@ export default function TierDetailScreen({ route, navigation }) {
           disabled={page === totalPages - 1}
           onPress={() => changePage(Math.min(totalPages - 1, page + 1))}
         >
-          <Ionicons name="chevron-forward" size={20} color={page === totalPages - 1 ? "#bdc3c7" : "#3498db"} />
+          <Ionicons name="chevron-forward" size={20} color={page === totalPages - 1 ? "#bdc3c7" : theme.colors.primary} />
         </TouchableOpacity>
       </View>
     );
@@ -153,16 +155,16 @@ export default function TierDetailScreen({ route, navigation }) {
   const renderEmpty = () => (
     !loading && (
       <View style={styles.emptyContainer}>
-        <Text style={styles.emptyText}>No characters in this tier yet</Text>
+        <Text style={[styles.emptyText, { color: theme.colors.textSecondary }]}>No characters in this tier yet</Text>
       </View>
     )
   );
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       {loading && !refreshing && page === 0 ? (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#3498db" />
+        <View style={[styles.loadingContainer, { backgroundColor: theme.colors.background }]}>
+          <ActivityIndicator size="large" color={theme.colors.primary} />
         </View>
       ) : (
         <FlatList
@@ -173,7 +175,11 @@ export default function TierDetailScreen({ route, navigation }) {
           ListFooterComponent={renderPagination} // Pagination ditaruh di bawah list
           ListEmptyComponent={renderEmpty}
           refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            <RefreshControl 
+              refreshing={refreshing} 
+              onRefresh={onRefresh}
+              tintColor={theme.colors.primary}
+            />
           }
           contentContainerStyle={styles.listContent}
         />

@@ -1,28 +1,30 @@
 // src/components/CharacterCard.js
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { useTheme } from '../context/ThemeContext';
 import { getTierColor, getTierName } from '../utils/tierColors';
 
 export default function CharacterCard({ character, onPress }) {
+  const { theme } = useTheme();
   const tierData = character.tier || {};
   const tierCode = character.tier_code || tierData.tier_code || 'Unknown';
   const tierName = tierData.tier_name || getTierName(tierCode);
 
   return (
-    <TouchableOpacity style={styles.card} onPress={onPress}>
+    <TouchableOpacity style={[styles.card, { backgroundColor: theme.colors.surface, shadowColor: theme.colors.text }]} onPress={onPress}>
       <Image 
         source={{ uri: character.image_url }} 
         style={styles.image}
       />
       <View style={styles.info}>
-        <Text style={styles.name}>{character.name}</Text>
-        <Text style={styles.anime}>{character.anime}</Text>
+        <Text style={[styles.name, { color: theme.colors.text }]}>{character.name}</Text>
+        <Text style={[styles.anime, { color: theme.colors.textSecondary }]}>{character.anime}</Text>
         <View style={styles.statsContainer}>
           <View style={[styles.tierBadge, { backgroundColor: getTierColor(tierCode) }]}>
             <Text style={styles.tierCode}>{tierCode}</Text>
           </View>
         </View>
-        <Text style={styles.tierName} numberOfLines={1}>{tierName}</Text>
+        <Text style={[styles.tierName, { color: theme.colors.textSecondary }]} numberOfLines={1}>{tierName}</Text>
       </View>
     </TouchableOpacity>
   );

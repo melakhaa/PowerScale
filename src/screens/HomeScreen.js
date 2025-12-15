@@ -12,12 +12,14 @@ import {
   Keyboard
 } from 'react-native';
 import { api } from '../config/supabase';
+import { useTheme } from '../context/ThemeContext';
 import CharacterCard from '../components/CharacterCard';
 import { Ionicons } from '@expo/vector-icons'; 
 
 const ITEMS_PER_PAGE = 5; 
 
 const HomeScreen = ({ navigation }) => {
+  const { theme } = useTheme();
   // --- STATE ---
   const [characters, setCharacters] = useState([]);
   const [inputText, setInputText] = useState(''); 
@@ -151,16 +153,16 @@ const HomeScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       {/* HEADER DI LUAR FLATLIST (Kunci Kestabilan Keyboard) */}
-      <View style={styles.fixedHeader}>
+      <View style={[styles.fixedHeader, { backgroundColor: theme.colors.background, borderBottomColor: theme.colors.border }]}>
         <View style={styles.headerTop}>
           <View>
-            <Text style={styles.title}>Power Scaling</Text>
-            <Text style={styles.subtitle}>Found: {totalCount} Characters</Text>
+            <Text style={[styles.title, { color: theme.colors.text }]}>Power Scaling</Text>
+            <Text style={[styles.subtitle, { color: theme.colors.textSecondary }]}>Found: {totalCount} Characters</Text>
           </View>
           <TouchableOpacity
-            style={styles.addButton}
+            style={[styles.addButton, { backgroundColor: theme.colors.primary }]}
             onPress={() => navigation.navigate('AddEditCharacter', { mode: 'add' })}
           >
             <Text style={styles.addButtonText}>+ Add</Text>
@@ -168,24 +170,24 @@ const HomeScreen = ({ navigation }) => {
         </View>
 
         {/* SEARCH BAR */}
-        <View style={styles.searchContainer}>
-          <Ionicons name="search" size={20} color="#7f8c8d" style={styles.searchIcon} />
+        <View style={[styles.searchContainer, { backgroundColor: theme.colors.surface, borderColor: theme.colors.border }]}>
+          <Ionicons name="search" size={20} color={theme.colors.textSecondary} style={styles.searchIcon} />
 
           <TextInput
-            style={styles.searchInput}
+            style={[styles.searchInput, { color: theme.colors.text }]}
             placeholder="Type name..."
-            placeholderTextColor="#95a5a6"
+            placeholderTextColor={theme.colors.textTertiary}
             value={inputText}
-            onChangeText={setInputText} // Cukup ubah text, useEffect yang kerja
+            onChangeText={setInputText}
             autoCapitalize="none"
           />
           
           {/* INDIKATOR LOADING / CLEAR */}
           {searchLoading ? (
-            <ActivityIndicator size="small" color="#3498db" />
+            <ActivityIndicator size="small" color={theme.colors.primary} />
           ) : inputText.length > 0 ? (
             <TouchableOpacity onPress={handleClear}>
-              <Ionicons name="close-circle" size={20} color="#7f8c8d" />
+              <Ionicons name="close-circle" size={20} color={theme.colors.textSecondary} />
             </TouchableOpacity>
           ) : null}
         </View>
@@ -193,9 +195,9 @@ const HomeScreen = ({ navigation }) => {
 
       {/* LIST DATA */}
       {loading && !refreshing && page === 0 ? (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#3498db" />
-          <Text style={{marginTop: 10, color: '#7f8c8d'}}>Loading Data...</Text>
+        <View style={[styles.loadingContainer, { backgroundColor: theme.colors.background }]}>
+          <ActivityIndicator size="large" color={theme.colors.primary} />
+          <Text style={[styles.loadingText, { color: theme.colors.textSecondary }]}>Loading Data...</Text>
         </View>
       ) : (
         <FlatList
@@ -204,7 +206,11 @@ const HomeScreen = ({ navigation }) => {
           keyExtractor={(item) => item.id.toString()}
           ListFooterComponent={renderPagination}
           refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            <RefreshControl 
+              refreshing={refreshing} 
+              onRefresh={onRefresh}
+              tintColor={theme.colors.primary}
+            />
           }
           contentContainerStyle={styles.listContent}
           keyboardShouldPersistTaps="handled"

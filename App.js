@@ -1,11 +1,13 @@
 // App.js
 import React from 'react';
+import { View, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
 
-// Import screens
+// Import context and screens
+import { ThemeProvider, useTheme } from './src/context/ThemeContext';
 import HomeScreen from './src/screens/HomeScreen';
 import CharacterDetailScreen from './src/screens/CharacterDetailScreen';
 import TierListScreen from './src/screens/TierListScreen';
@@ -16,18 +18,39 @@ import AddEditCharacterScreen from './src/screens/AddEditCharacterScreen';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
+// Theme Toggle Button Component
+function ThemeToggleButton() {
+  const { isDarkMode, toggleTheme } = useTheme();
+
+  return (
+    <TouchableOpacity
+      onPress={toggleTheme}
+      style={{ marginRight: 15 }}
+    >
+      <Ionicons
+        name={isDarkMode ? 'sunny' : 'moon'}
+        size={24}
+        color="#fff"
+      />
+    </TouchableOpacity>
+  );
+}
+
 // Stack Navigator untuk Home
 function HomeStack() {
+  const { theme } = useTheme();
+
   return (
     <Stack.Navigator
       screenOptions={{
         headerStyle: {
-          backgroundColor: '#3498db',
+          backgroundColor: theme.colors.primary,
         },
         headerTintColor: '#fff',
         headerTitleStyle: {
           fontWeight: 'bold',
         },
+        headerRight: () => <ThemeToggleButton />,
       }}
     >
       <Stack.Screen
@@ -51,16 +74,19 @@ function HomeStack() {
 
 // Stack Navigator untuk Tier List
 function TierStack() {
+  const { theme } = useTheme();
+
   return (
     <Stack.Navigator
       screenOptions={{
         headerStyle: {
-          backgroundColor: '#3498db',
+          backgroundColor: theme.colors.primary,
         },
         headerTintColor: '#fff',
         headerTitleStyle: {
           fontWeight: 'bold',
         },
+        headerRight: () => <ThemeToggleButton />,
       }}
     >
       <Stack.Screen
@@ -79,7 +105,7 @@ function TierStack() {
         options={{ title: 'Character Detail' }}
       />
       <Stack.Screen
-        name="TierAddEditCharacter"
+        name="AddEditCharacter"
         component={AddEditCharacterScreen}
         options={{ title: 'Add Character' }}
       />
@@ -89,6 +115,8 @@ function TierStack() {
 
 // Bottom Tab Navigator
 function MainTabs() {
+  const { theme } = useTheme();
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -105,12 +133,14 @@ function MainTabs() {
 
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: '#3498db',
-        tabBarInactiveTintColor: '#95a5a6',
+        tabBarActiveTintColor: theme.colors.primary,
+        tabBarInactiveTintColor: theme.colors.textTertiary,
         tabBarStyle: {
           paddingBottom: 5,
           paddingTop: 5,
           height: 60,
+          backgroundColor: theme.colors.surface,
+          borderTopColor: theme.colors.border,
         },
         headerShown: false,
       })}
@@ -132,23 +162,39 @@ function MainTabs() {
           title: 'Profile',
           headerShown: true,
           headerStyle: {
-            backgroundColor: '#3498db',
+            backgroundColor: theme.colors.primary,
           },
           headerTintColor: '#fff',
           headerTitleStyle: {
             fontWeight: 'bold',
           },
+          headerRight: () => <ThemeToggleButton />,
         }}
       />
     </Tab.Navigator>
   );
 }
 
-// Main App Component
-export default function App() {
+// Main App Component with Navigation
+function AppContent() {
+  const { isLoading } = useTheme();
+
+  if (isLoading) {
+    return null;
+  }
+
   return (
     <NavigationContainer>
       <MainTabs />
     </NavigationContainer>
+  );
+}
+
+// Main App Component
+export default function App() {
+  return (
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
   );
 }

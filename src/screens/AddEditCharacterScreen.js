@@ -12,10 +12,12 @@ import {
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { api } from '../config/supabase';
+import { useTheme } from '../context/ThemeContext';
 import { getTierColor, getTierName } from '../utils/tierColors';
 
 const AddEditCharacterScreen = ({ route, navigation }) => {
   const { characterId, mode } = route.params || { mode: 'add' };
+  const { theme } = useTheme();
   const isEditMode = mode === 'edit';
 
   const [loading, setLoading] = useState(false);
@@ -215,40 +217,43 @@ const AddEditCharacterScreen = ({ route, navigation }) => {
 
   if (loading) {
     return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#3498db" />
+      <View style={[styles.loadingContainer, { backgroundColor: theme.colors.background }]}>
+        <ActivityIndicator size="large" color={theme.colors.primary} />
       </View>
     );
   }
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <View style={styles.form}>
         <View style={styles.inputGroup}>
-          <Text style={styles.label}>Character Name *</Text>
+          <Text style={[styles.label, { color: theme.colors.text }]}>Character Name *</Text>
           <TextInput
-            style={styles.input}
+            style={[styles.input, { backgroundColor: theme.colors.surface, color: theme.colors.text, borderColor: theme.colors.border }]}
             placeholder="Enter character name"
+            placeholderTextColor={theme.colors.textTertiary}
             value={formData.name}
             onChangeText={(text) => setFormData({ ...formData, name: text })}
           />
         </View>
 
         <View style={styles.inputGroup}>
-          <Text style={styles.label}>Anime *</Text>
+          <Text style={[styles.label, { color: theme.colors.text }]}>Anime *</Text>
           <TextInput
-            style={styles.input}
+            style={[styles.input, { backgroundColor: theme.colors.surface, color: theme.colors.text, borderColor: theme.colors.border }]}
             placeholder="Enter anime name"
+            placeholderTextColor={theme.colors.textTertiary}
             value={formData.anime}
             onChangeText={(text) => setFormData({ ...formData, anime: text })}
           />
         </View>
 
         <View style={styles.inputGroup}>
-          <Text style={styles.label}>Power Level (0-100) *</Text>
+          <Text style={[styles.label, { color: theme.colors.text }]}>Power Level (0-100) *</Text>
           <TextInput
-            style={styles.input}
+            style={[styles.input, { backgroundColor: theme.colors.surface, color: theme.colors.text, borderColor: theme.colors.border }]}
             placeholder="Enter power level"
+            placeholderTextColor={theme.colors.textTertiary}
             value={formData.power_level}
             onChangeText={handlePowerLevelChange}
             keyboardType="numeric"
@@ -256,30 +261,32 @@ const AddEditCharacterScreen = ({ route, navigation }) => {
         </View>
 
         <View style={styles.inputGroup}>
-          <Text style={styles.label}>Tier (Auto-calculated)</Text>
-          <View style={styles.tierDisplay}>
+          <Text style={[styles.label, { color: theme.colors.text }]}>Tier (Auto-calculated)</Text>
+          <View style={[styles.tierDisplay, { backgroundColor: theme.colors.surface, borderColor: theme.colors.border }]}>
             <View style={[styles.tierBadge, { backgroundColor: getTierColor(formData.tier_code) }]}>
               <Text style={styles.tierText}>{formData.tier_code}</Text>
             </View>
-            <Text style={styles.tierInfo}>{getTierName(formData.tier_code)}</Text>
+            <Text style={[styles.tierInfo, { color: theme.colors.textSecondary }]}>{getTierName(formData.tier_code)}</Text>
           </View>
         </View>
 
         <View style={styles.inputGroup}>
-          <Text style={styles.label}>Image URL</Text>
+          <Text style={[styles.label, { color: theme.colors.text }]}>Image URL</Text>
           <TextInput
-            style={styles.input}
+            style={[styles.input, { backgroundColor: theme.colors.surface, color: theme.colors.text, borderColor: theme.colors.border }]}
             placeholder="Enter image URL (optional)"
+            placeholderTextColor={theme.colors.textTertiary}
             value={formData.image_url}
             onChangeText={(text) => setFormData({ ...formData, image_url: text })}
           />
         </View>
 
         <View style={styles.inputGroup}>
-          <Text style={styles.label}>Abilities</Text>
+          <Text style={[styles.label, { color: theme.colors.text }]}>Abilities</Text>
           <TextInput
-            style={[styles.input, styles.textArea]}
+            style={[styles.input, styles.textArea, { backgroundColor: theme.colors.surface, color: theme.colors.text, borderColor: theme.colors.border }]}
             placeholder="Enter abilities (comma separated)"
+            placeholderTextColor={theme.colors.textTertiary}
             value={formData.abilities}
             onChangeText={(text) => setFormData({ ...formData, abilities: text })}
             multiline
@@ -288,10 +295,11 @@ const AddEditCharacterScreen = ({ route, navigation }) => {
         </View>
 
         <View style={styles.inputGroup}>
-          <Text style={styles.label}>Description</Text>
+          <Text style={[styles.label, { color: theme.colors.text }]}>Description</Text>
           <TextInput
-            style={[styles.input, styles.textArea]}
+            style={[styles.input, styles.textArea, { backgroundColor: theme.colors.surface, color: theme.colors.text, borderColor: theme.colors.border }]}
             placeholder="Enter character description"
+            placeholderTextColor={theme.colors.textTertiary}
             value={formData.description}
             onChangeText={(text) => setFormData({ ...formData, description: text })}
             multiline
@@ -299,14 +307,15 @@ const AddEditCharacterScreen = ({ route, navigation }) => {
           />
         </View>
 
-        <View style={styles.statisticsSection}>
-          <Text style={styles.statisticsTitle}>Statistics</Text>
+        <View style={[styles.statisticsSection, { backgroundColor: theme.colors.surface }]}>
+          <Text style={[styles.statisticsTitle, { color: theme.colors.text, borderBottomColor: theme.colors.primary }]}>Statistics</Text>
           
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Attack Potency</Text>
+            <Text style={[styles.label, { color: theme.colors.text }]}>Attack Potency</Text>
             <TextInput
-              style={styles.input}
+              style={[styles.input, { backgroundColor: theme.colors.background, color: theme.colors.text, borderColor: theme.colors.border }]}
               placeholder="Enter attack potency"
+              placeholderTextColor={theme.colors.textTertiary}
               value={formData.attack_potency}
               onChangeText={(text) => setFormData({ ...formData, attack_potency: text })}
               multiline
@@ -315,10 +324,11 @@ const AddEditCharacterScreen = ({ route, navigation }) => {
           </View>
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Speed</Text>
+            <Text style={[styles.label, { color: theme.colors.text }]}>Speed</Text>
             <TextInput
-              style={styles.input}
+              style={[styles.input, { backgroundColor: theme.colors.background, color: theme.colors.text, borderColor: theme.colors.border }]}
               placeholder="Enter speed"
+              placeholderTextColor={theme.colors.textTertiary}
               value={formData.speed}
               onChangeText={(text) => setFormData({ ...formData, speed: text })}
               multiline
@@ -327,10 +337,11 @@ const AddEditCharacterScreen = ({ route, navigation }) => {
           </View>
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Lifting Strength</Text>
+            <Text style={[styles.label, { color: theme.colors.text }]}>Lifting Strength</Text>
             <TextInput
-              style={styles.input}
+              style={[styles.input, { backgroundColor: theme.colors.background, color: theme.colors.text, borderColor: theme.colors.border }]}
               placeholder="Enter lifting strength"
+              placeholderTextColor={theme.colors.textTertiary}
               value={formData.lifting_strength}
               onChangeText={(text) => setFormData({ ...formData, lifting_strength: text })}
               multiline
@@ -339,10 +350,11 @@ const AddEditCharacterScreen = ({ route, navigation }) => {
           </View>
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Striking Strength</Text>
+            <Text style={[styles.label, { color: theme.colors.text }]}>Striking Strength</Text>
             <TextInput
-              style={styles.input}
+              style={[styles.input, { backgroundColor: theme.colors.background, color: theme.colors.text, borderColor: theme.colors.border }]}
               placeholder="Enter striking strength"
+              placeholderTextColor={theme.colors.textTertiary}
               value={formData.striking_strength}
               onChangeText={(text) => setFormData({ ...formData, striking_strength: text })}
               multiline
@@ -351,10 +363,11 @@ const AddEditCharacterScreen = ({ route, navigation }) => {
           </View>
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Durability</Text>
+            <Text style={[styles.label, { color: theme.colors.text }]}>Durability</Text>
             <TextInput
-              style={styles.input}
+              style={[styles.input, { backgroundColor: theme.colors.background, color: theme.colors.text, borderColor: theme.colors.border }]}
               placeholder="Enter durability"
+              placeholderTextColor={theme.colors.textTertiary}
               value={formData.durability}
               onChangeText={(text) => setFormData({ ...formData, durability: text })}
               multiline
@@ -363,10 +376,11 @@ const AddEditCharacterScreen = ({ route, navigation }) => {
           </View>
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Stamina</Text>
+            <Text style={[styles.label, { color: theme.colors.text }]}>Stamina</Text>
             <TextInput
-              style={styles.input}
+              style={[styles.input, { backgroundColor: theme.colors.background, color: theme.colors.text, borderColor: theme.colors.border }]}
               placeholder="Enter stamina"
+              placeholderTextColor={theme.colors.textTertiary}
               value={formData.stamina}
               onChangeText={(text) => setFormData({ ...formData, stamina: text })}
               multiline
@@ -375,10 +389,11 @@ const AddEditCharacterScreen = ({ route, navigation }) => {
           </View>
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Range</Text>
+            <Text style={[styles.label, { color: theme.colors.text }]}>Range</Text>
             <TextInput
-              style={styles.input}
+              style={[styles.input, { backgroundColor: theme.colors.background, color: theme.colors.text, borderColor: theme.colors.border }]}
               placeholder="Enter range"
+              placeholderTextColor={theme.colors.textTertiary}
               value={formData.range}
               onChangeText={(text) => setFormData({ ...formData, range: text })}
               multiline
@@ -387,10 +402,11 @@ const AddEditCharacterScreen = ({ route, navigation }) => {
           </View>
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Intelligence</Text>
+            <Text style={[styles.label, { color: theme.colors.text }]}>Intelligence</Text>
             <TextInput
-              style={styles.input}
+              style={[styles.input, { backgroundColor: theme.colors.background, color: theme.colors.text, borderColor: theme.colors.border }]}
               placeholder="Enter intelligence"
+              placeholderTextColor={theme.colors.textTertiary}
               value={formData.intelligence}
               onChangeText={(text) => setFormData({ ...formData, intelligence: text })}
               multiline
@@ -399,10 +415,11 @@ const AddEditCharacterScreen = ({ route, navigation }) => {
           </View>
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Notable Techniques</Text>
+            <Text style={[styles.label, { color: theme.colors.text }]}>Notable Techniques</Text>
             <TextInput
-              style={[styles.input, styles.textArea]}
+              style={[styles.input, styles.textArea, { backgroundColor: theme.colors.background, color: theme.colors.text, borderColor: theme.colors.border }]}
               placeholder="Enter notable techniques"
+              placeholderTextColor={theme.colors.textTertiary}
               value={formData.notable_techniques}
               onChangeText={(text) => setFormData({ ...formData, notable_techniques: text })}
               multiline
@@ -412,7 +429,7 @@ const AddEditCharacterScreen = ({ route, navigation }) => {
         </View>
 
         <TouchableOpacity
-          style={[styles.saveButton, saving && styles.saveButtonDisabled]}
+          style={[styles.saveButton, saving && styles.saveButtonDisabled, { backgroundColor: theme.colors.primary }]}
           onPress={handleSave}
           disabled={saving}
         >
